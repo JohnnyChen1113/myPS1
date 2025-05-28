@@ -7,6 +7,14 @@ import Preview from '../components/Preview';
 import Result from '../components/Result';
 import PS1Parser from '../components/PS1Parser';
 
+// 定义Element类型，和ElementSelector一致
+interface Element {
+  key: string;
+  label: string;
+  enabled: boolean;
+  color: string;
+}
+
 const defaultElements = [
   { key: 'user', label: 'Username', defaultColor: '#4F46E5' },
   { key: 'host', label: 'Hostname', defaultColor: '#16A34A' },
@@ -19,15 +27,15 @@ const defaultElements = [
 
 export default function HomePage() {
   const [shell, setShell] = useState<'bash' | 'zsh'>('bash');
-  const [elements, setElements] = useState(
-    defaultElements.map(e => ({ ...e, enabled: true, color: e.defaultColor }))
+  const [elements, setElements] = useState<Element[]>(
+    defaultElements.map(e => ({ key: e.key, label: e.label, enabled: true, color: e.defaultColor }))
   );
 
   const handleElementChange = (key: string, enabled: boolean, color: string) => {
     setElements(els => els.map(e => e.key === key ? { ...e, enabled, color } : e));
   };
 
-  const handlePreset = (preset: typeof elements) => {
+  const handlePreset = (preset: Element[]) => {
     setElements(preset);
   };
 
